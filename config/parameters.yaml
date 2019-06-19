@@ -1,8 +1,22 @@
-topic1: "pointcloud2_cluster_tracking/clusters"
-out_topic1: "seg_images"
-topic2: "rear_cam/image_raw"
-out_topic2: "image_segmentation_node/seg_image"
-out_topic3: "test_pcl"
+input_topic_clusters: "pointcloud2_cluster_tracking/clusters"
+out_topic_seg_images: "seg_images"
+# input_topic_camera: "rear_cam/image_raw"
+input_topic_camera: "/camera/rgb/image_raw"
+out_topic_my_cluster_image: "image_segmentation_node/seg_image"
+out_topic_clusters: "test_pcl"
 
 safety_pixels: 20 #additional pixels both at left and right edges
-maxBufferSize: 120
+maxBufferSize: 200
+MY_CLUSTER: 6
+cutPixelsFromTop: 170  #This parameter depends on the height of the tracking object. The value of 170 is about 1.70m. For smaller objects you have to increase the value.
+saveTotalPixels: 85   #How many pixels (image.rows) do you want to save.
+rad_deviation_Camera_Laser: 0.040 # 0.085 rads= 4.87 degrees
+base: 2 # base^distance
+clusterToChoose: 2 #1:From variable MY_CLUSTER 2:The first cluster in motion
+
+
+
+
+
+
+
