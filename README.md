@@ -23,6 +23,7 @@ This package is dependent on the following ROS packages:
 * [Pointcloud msgs](https://github.com/roboskel/pointcloud_msgs)
 * [Image msgs](https://github.com/roboskel/image_msgs)
 * [hpr](https://github.com/roboskel/hpr/tree/rel3)
+* [Roboskel messages] (https://github.com/roboskel/roboskel_msgs)
 
 The package also requires the OpenCV library, which is included and automatically installed during the ROS installation process.
 
@@ -38,7 +39,9 @@ To run the demo, follow these steps:
  `git clone https://github.com/roboskel/pointcloud2_segments_viz.git`\
  `git clone https://github.com/roboskel/hpr.git`\
  `git clone https://github.com/roboskel/image_segmentation_node.git`\
- `git clone https://github.com/roboskel/image_msgs.git`
+ `git clone https://github.com/roboskel/image_msgs.git`\
+ `git clone https://github.com/roboskel/roboskel_msgs.git`
+ 
  
 3. Run `cd hpr`.  Switch to rel3 branch by running `git checkout rel3`
 4. If you want to change the value of the safety_pixels parameter (defines the number of extra pixels added to each side of the cropped images), go to `src/image_segmentation_node/src` and open `image_segmentation.cpp`. In main function, change the following line:\
