@@ -23,7 +23,7 @@ This package is dependent on the following ROS packages:
 * [Pointcloud msgs](https://github.com/roboskel/pointcloud_msgs)
 * [Image msgs](https://github.com/roboskel/image_msgs)
 * [hpr](https://github.com/roboskel/hpr/tree/rel3)
-* [Roboskel messages] (https://github.com/roboskel/roboskel_msgs)
+* [Roboskel messages](https://github.com/roboskel/roboskel_msgs)
 
 The package also requires the OpenCV library, which is included and automatically installed during the ROS installation process.
 
