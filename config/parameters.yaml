@@ -5,7 +5,7 @@ input_topic_camera: "/camera/rgb/image_raw"
 out_topic_my_cluster_image: "image_segmentation_node/seg_image"
 out_topic_clusters: "test_pcl"
 
-safety_pixels: 20 #additional pixels both at left and right edges
+# safety_pixels: 20 #additional pixels both at left and right edges
 maxBufferSize: 200
 MY_CLUSTER: 6
 cutPixelsFromTop: 170  #This parameter depends on the height of the tracking object. The value of 170 is about 1.70m. For smaller objects you have to increase the value.
