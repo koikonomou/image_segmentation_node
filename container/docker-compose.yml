@@ -1,0 +1,26 @@
+version: '3.4'
+services:
+  roscore:
+    image: image_seg
+    network_mode: host
+    command: bach -c "roscore"
+  # rosbag:
+  #   image: image_seg
+  #   network_mode: host
+  #   command: bach -c ""
+  hpr:
+    image: image_seg
+    network_mode: host
+    command: bash -c "roslaunch hpr hpr_test.launch use_sim_time:=False input_topic:=/scan_filtered method:=2"
+    depends_on: 
+      - roscore
+  image_segmentation:
+    image: image_seg
+    network_mode: host
+    command: bach -c  "roslaunch image_segmentation_node image_segmentation_node.launch safety_pixels:=20"
+    depends_on: 
+      - hpr
+  image_seg_saver:
+    image: image_seg
+    network_mode: host
+    command: bach -c "rosrun imag seg_listener"
