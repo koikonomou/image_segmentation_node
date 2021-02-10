@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <launch>
 	<arg name="safety_pixels" default="20" /> 
+	<arg name="input_topic_camera" default="/radio_cam/rgb/image_raw" />
 
     <node pkg="image_segmentation_node" type="image_segmentation" respawn="false" name="image_segmentation_node" output="screen">
         <rosparam file="$(find image_segmentation_node)/config/parameters.yaml" command="load" />
-    	<rosparam param="safety_pixels" subst_value="True">
-    		$(arg safety_pixels)
-    	</rosparam>
+    	<rosparam param="safety_pixels" subst_value="True">$(arg safety_pixels)</rosparam>
+    	<rosparam param="input_topic_camera" subst_value="True">$(arg input_topic_camera)</rosparam>
         
     </node>
 </launch>
