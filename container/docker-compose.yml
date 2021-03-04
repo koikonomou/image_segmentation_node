@@ -3,11 +3,11 @@ services:
   roscore:
     image: image_seg
     network_mode: host
-    command: bach -c "roscore"
+    command: bash -c "roscore"
   # rosbag:
   #   image: image_seg
   #   network_mode: host
-  #   command: bach -c ""
+  #   command: bash -c ""
   hpr:
     image: image_seg
     network_mode: host
@@ -17,10 +17,14 @@ services:
   image_segmentation:
     image: image_seg
     network_mode: host
-    command: bach -c  "roslaunch image_segmentation_node image_segmentation_node.launch safety_pixels:=20"
+    command: bash -c  "roslaunch image_segmentation_node image_segmentation_node.launch safety_pixels:=20"
     depends_on: 
+      - roscore
       - hpr
   image_seg_saver:
     image: image_seg
     network_mode: host
-    command: bach -c "rosrun imag seg_listener"
+    command: bash -c "rosrun image_segmentation_node seg_listener"
+      - roscore
+      - hpr
+      - image_segmentation

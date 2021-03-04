@@ -12,6 +12,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -
     ros-melodic-sensor-msgs \
     ros-melodic-message-filters \
     ros-melodic-laser-geometry \
+    ros-melodic-laser-filters \
     ros-melodic-message-runtime \
     ros-melodic-pcl-conversions \
     ros-melodic-image-transport \
@@ -27,14 +28,14 @@ RUN apt-get update && apt-get install -y \
 	rosdep init && \
 	rosdep update && \
 	cd /opt/catkin_ws/src && \
-	# git clone https://github.com/roboskel/pointcloud_msgs.git && \
+	git clone https://github.com/roboskel/pointcloud_msgs.git && \
 	git clone https://github.com/roboskel/laserscan_stacker.git  && \
 	git clone https://github.com/roboskel/pointcloud2_clustering.git && \
 	git clone https://github.com/roboskel/pointcloud2_cluster_tracking.git && \
 	git clone https://github.com/roboskel/pointcloud2_segments_viz.git && \
 	git clone -b rel3 https://github.com/roboskel/hpr.git && \
 	git clone https://github.com/roboskel/image_segmentation_node.git && \
-	# git clone https://github.com/roboskel/image_msgs.git && \
+	git clone https://github.com/roboskel/image_msgs.git && \
 	git clone https://github.com/roboskel/roboskel_msgs.git && \
     cd .. && \
     rosdep install --from-paths src --ignore-src -r -y && \
