@@ -25,6 +25,7 @@ services:
     image: image_seg
     network_mode: host
     command: bash -c "rosrun image_segmentation_node seg_listener"
+    depends_on:
       - roscore
       - hpr
       - image_segmentation
