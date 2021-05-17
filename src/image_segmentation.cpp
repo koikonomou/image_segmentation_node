@@ -100,7 +100,7 @@ void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
 
   cv_bridge::CvImagePtr cv_ptr;
   cv_ptr = cv_bridge::toCvCopy(latest_frame, "bgr8");
-
+  out_msg.full_image.push_back(latest_frame);
 
   pcl::PointCloud<pcl::PointXYZ> pcz;       //pcz contains all points with max z
 
@@ -203,7 +203,7 @@ void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
     x_l = min(2*center, max(0, (int)ceil(min(angle_l, angle_r) * ratio + center - safety_pixels)));
     x_r = max(0, min(2*center, (int)floor(max(angle_l, angle_r) * ratio + center + safety_pixels)));
 
-    int width_pixels, width_offset, height_pixels,height_offset;
+    int width_pixels, width_offset, height_pixels, height_offset;
     
     width_pixels = x_r - x_l;
 
@@ -233,7 +233,7 @@ void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
 
       //----------------------------------------------------------------//
 
-      cv::Rect myROIseg(width_offset, height_offset, width_pixels, height_pixels); 
+      cv::Rect myROIseg(width_offset, height_offset, width_pixels, height_pixels);
       cv::Mat roiseg = cv::Mat(cv_ptr->image, myROIseg);
 
       //Image Segmentation
@@ -268,7 +268,7 @@ void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
     std::cout << "]" << std::endl;
   }
 
-   std::cout << "has_image contents:  [";
+  std::cout << "has_image contents:  [";
   for(int c=0; c<out_msg.has_image.size(); c++){
    std::cout << "," << out_msg.has_image[c];
   }
