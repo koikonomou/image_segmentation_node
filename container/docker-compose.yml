@@ -21,11 +21,19 @@ services:
     depends_on: 
       - roscore
       - hpr
-  image_seg_saver:
+  image_track:
     image: image_seg
     network_mode: host
-    command: bash -c "rosrun image_segmentation_node seg_listener"
-    depends_on:
+    command: bash -c  "roslaunch image_segmentation_node image_track.launch"
+    depends_on: 
       - roscore
       - hpr
       - image_segmentation
+  # image_seg_saver:
+  #   image: image_seg
+  #   network_mode: host
+  #   command: bash -c "rosrun image_segmentation_node seg_listener"
+  #   depends_on:
+  #     - roscore
+  #     - hpr
+  #     - image_segmentation
