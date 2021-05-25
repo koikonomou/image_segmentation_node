@@ -19,7 +19,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl_ros/point_cloud.h>
 
-#include <pointcloud_msgs/PointCloud2_Segments.h>
+#include <roboskel_msgs/PointCloud2_Segments.h>
 #include <roboskel_msgs/Image_Segments.h>
 
 #define LOGFILE "imseg.log"
@@ -51,7 +51,7 @@ void Log (uint32_t duration_nsecs, std::string message){  // logs a message to L
 }
 
 
-void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
+void pcl_seg_Callback(const roboskel_msgs::PointCloud2_Segments& msg) {
 
   if(first_frame == 0){
     return;
@@ -387,7 +387,7 @@ int main(int argc, char **argv){
 
   pcl_pub = nh.advertise<sensor_msgs::PointCloud2> (out_topic_clusters, 1);
 
-  ros::Subscriber pcl_seg_sub = nh.subscribe<const pointcloud_msgs::PointCloud2_Segments&>(input_topic_clusters, 1, pcl_seg_Callback);
+  ros::Subscriber pcl_seg_sub = nh.subscribe<const roboskel_msgs::PointCloud2_Segments&>(input_topic_clusters, 1, pcl_seg_Callback);
 
   image_transport::Subscriber video_sub = it.subscribe(input_topic_camera, 50, videoCallback);    //  camera/rgb/image_raw gia to rosbag me tous 3, rear_cam/image_raw gia to rosbag me emena, usb_cam/image_raw gia to rosbag me to video mono
 
