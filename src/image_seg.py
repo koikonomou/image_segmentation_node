@@ -4,7 +4,7 @@ import cv2
 import rospy
 import argparse
 from sensor_msgs.msg import Image
-from image_msgs.msg import Image_Segments
+from roboskel_msgs.msg import Image_Segments
 from cv_bridge import CvBridge, CvBridgeError
 from sklearn.cluster import KMeans
 import matplotlib.colors as mcolors
