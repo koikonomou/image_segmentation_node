@@ -3,14 +3,14 @@
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
-#include <image_msgs/Image_Segments.h>
+#include <roboskel_msgs/Image_Segments.h>
 
 #include <string>
 
 using namespace std;
 int message_count = 0; 
 
-void segCallback(const image_msgs::Image_Segments set){
+void segCallback(const roboskel_msgs::Image_Segments set){
 	
 	int image_count = 0; 
 	for( int i=0; i<set.image_set.size(); i++ ){
