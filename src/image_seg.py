@@ -19,7 +19,7 @@ class Track:
 
       self.bridge = CvBridge()
       self.image_sub = rospy.Subscriber("seg_images", Image_Segments, self.track_callback)
-      self.image_pub = rospy.Publisher("Image_seg_color_track",Image)
+      self.image_pub = rospy.Publisher("image_seg_color_track",Image)
       self.num_clusters = 1
 
 
@@ -70,23 +70,19 @@ class Track:
     def visualize_tracking_(self, img, indices, rect):
         """Show image with colored bounding boxes on people"""
         img1 = np.copy(img)
-        print("len indices", len(indices))
         for i in range(len(indices)):
-            print("rectangle", rect[i])
             img1 = cv2.rectangle(img1, rect[i], self.colors_[self.ids[i] % len(self.colors_)], 2)
         cv2.imshow("image", img1)
         cv2.waitKey(1)
 
     def pub_image(self, img, indices, rect):
         img1 = np.copy(img)
-        print("len indices", len(indices))
         for i in range(len(indices)):
-            print("rectangle", rect[i])
             image = cv2.rectangle(img1, rect[i], self.colors_[self.ids[i] % len(self.colors_)], 2)
         return image
 
 
-    def track_callback(self, msg):
+    def track_callback(self, msg, visualize = False):
         image_gb = msg.full_image
         image_gb = self.bridge.imgmsg_to_cv2(image_gb, "bgr8")
         image_gb = cv2.GaussianBlur(image_gb, (7, 7), 0)
@@ -105,7 +101,6 @@ class Track:
             width = msg.width[i]
             height = msg.height[i]
             instance = (x,y,width,height)
-            # print("instance",instance)
             # myRect = img[280:340, 330:390]
             instances.append(instance)
             # indices = msg.image_set[i]
@@ -156,14 +151,15 @@ class Track:
                     self.ids[i] = marker
                     marker += 1
 
-        self.visualize_tracking_(image_gb, indices, instances)
         try:
           self.image_message = self.bridge.cv2_to_imgmsg(self.pub_image(image_gb, indices, instances), "passthrough")
         except CvBridgeError as e:
           print(e)
 
         self.image_pub.publish(self.image_message)
-
+        
+        if visualize:
+            self.visualize_tracking_(image_gb, indices, instances)
 
 def main(args):
   ic = Track()

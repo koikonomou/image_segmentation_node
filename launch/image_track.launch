@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<launch>
+    <node pkg="image_segmentation_node" type="image_seg.py" respawn="false" name="image_track" output="screen">
+    </node>
+</launch>
