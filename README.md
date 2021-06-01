@@ -21,7 +21,6 @@ This package is dependent on the following ROS packages:
 * [Pointcloud2 Cluster Tracking](https://github.com/roboskel/pointcloud2_cluster_tracking)
 * [PointCloud2 Segments Viz](https://github.com/roboskel/pointcloud2_segments_viz)
 * [Pointcloud msgs](https://github.com/roboskel/pointcloud_msgs)
-* [Image msgs](https://github.com/roboskel/image_msgs)
 * [hpr](https://github.com/roboskel/hpr/tree/rel3)
 * [Roboskel messages](https://github.com/roboskel/roboskel_msgs)
 
@@ -39,7 +38,6 @@ To run the demo, follow these steps:
  `git clone https://github.com/roboskel/pointcloud2_segments_viz.git`\
  `git clone https://github.com/roboskel/hpr.git`\
  `git clone https://github.com/roboskel/image_segmentation_node.git`\
- `git clone https://github.com/roboskel/image_msgs.git`\
  `git clone https://github.com/roboskel/roboskel_msgs.git`
  
  
@@ -74,3 +72,24 @@ to\
 16. Enjoy the demo!
 
 This package was developed and tested for `ROS Melodic`.
+
+## RUN FROM DOCKER
+1. Clone all necessary packages from GitHub using the following commands:\
+`git clone https://github.com/roboskel/image_segmentation_node.git`
+2. roscd image_segmentation_node/container 
+3. Build docker image with: sudo docker build -t image_track -f ./container/Dockerfile .
+4. In container repo run : sudo docker-compose up
+5. In another terminal run your rosbag with : rosbag play yourrosbag -l --clock
+6. Open a third terminal and run : rviz
+7. In rviz, follow these steps:
+  * In Global Options. change the fixed frame by selecting *base link* from the dropdown menu.
+  * Click on *Add* button, then click on the *By topic* tab.
+  * Select *LaserScan* under */scan* and click OK
+  * In a similar fashion, add the following topics:
+     * /image_segmentation_node/seg_image
+     * /image_seg_color_track
+     * /rear_cam/image_raw
+     * /test_pcl
+     * /pointcloud2_segments_viz/pc2_viz
+
+
