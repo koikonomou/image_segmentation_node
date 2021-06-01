@@ -73,16 +73,16 @@ to\
 
 This package was developed and tested for `ROS Melodic`.
 
-## RUN FROM DOCKER
+## Run from docker
 1. Clone all necessary packages from GitHub using the following commands:\
 `git clone https://github.com/roboskel/image_segmentation_node.git`
-2. roscd image_segmentation_node/container 
-3. Build docker image with: sudo docker build -t image_track -f ./container/Dockerfile .
+2. Build docker image with: sudo docker build -t image_track -f ./container/Dockerfile .
+3. roscd image_segmentation_node/container 
 4. In container repo run : sudo docker-compose up
 5. In another terminal run your rosbag with : rosbag play yourrosbag -l --clock
 6. Open a third terminal and run : rviz
 7. In rviz, follow these steps:
-  * In Global Options. change the fixed frame by selecting *base link* from the dropdown menu.
+  * In Global Options. Change the fixed frame by selecting *base link* from the dropdown menu.
   * Click on *Add* button, then click on the *By topic* tab.
   * Select *LaserScan* under */scan* and click OK
   * In a similar fashion, add the following topics:
