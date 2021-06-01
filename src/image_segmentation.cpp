@@ -19,8 +19,8 @@
 #include <pcl/point_cloud.h>
 #include <pcl_ros/point_cloud.h>
 
-#include <pointcloud_msgs/PointCloud2_Segments.h>
-#include <image_msgs/Image_Segments.h>
+#include <roboskel_msgs/PointCloud2_Segments.h>
+#include <roboskel_msgs/Image_Segments.h>
 
 #define LOGFILE "imseg.log"
 #define FIELD_OF_VIEW_ANGLE M_PI/3  //total camera field of view (horizontal) in rads
@@ -51,14 +51,14 @@ void Log (uint32_t duration_nsecs, std::string message){  // logs a message to L
 }
 
 
-void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
+void pcl_seg_Callback(const roboskel_msgs::PointCloud2_Segments& msg) {
 
   if(first_frame == 0){
     return;
   }
 
 
-  image_msgs::Image_Segments out_msg;
+  roboskel_msgs::Image_Segments out_msg;
  
 
   double angle_min = msg.angle_min;
@@ -100,7 +100,7 @@ void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
 
   cv_bridge::CvImagePtr cv_ptr;
   cv_ptr = cv_bridge::toCvCopy(latest_frame, "bgr8");
-
+  out_msg.full_image = latest_frame;
 
   pcl::PointCloud<pcl::PointXYZ> pcz;       //pcz contains all points with max z
 
@@ -203,8 +203,9 @@ void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
     x_l = min(2*center, max(0, (int)ceil(min(angle_l, angle_r) * ratio + center - safety_pixels)));
     x_r = max(0, min(2*center, (int)floor(max(angle_l, angle_r) * ratio + center + safety_pixels)));
 
-    int width_pixels, width_offset, height_pixels,height_offset;
-    
+    int width_pixels, width_offset, height_pixels, height_offset;
+
+
     width_pixels = x_r - x_l;
 
     if (width_pixels < (1 + 2*safety_pixels)){
@@ -233,7 +234,7 @@ void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
 
       //----------------------------------------------------------------//
 
-      cv::Rect myROIseg(width_offset, height_offset, width_pixels, height_pixels); 
+      cv::Rect myROIseg(width_offset, height_offset, width_pixels, height_pixels);
       cv::Mat roiseg = cv::Mat(cv_ptr->image, myROIseg);
 
       //Image Segmentation
@@ -245,7 +246,10 @@ void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
           tpub.publish(*imgptr);
         }
       }
-      
+	  out_msg.x.push_back(width_offset);
+	  out_msg.y.push_back( height_offset);
+	  out_msg.width.push_back(width_pixels);
+	  out_msg.height.push_back(height_pixels) ;
       out_msg.image_set.push_back(*imgptr); //insert images into message for publishing
 
       if(msg.cluster_id.size() != 0 ){
@@ -268,7 +272,7 @@ void pcl_seg_Callback(const pointcloud_msgs::PointCloud2_Segments& msg) {
     std::cout << "]" << std::endl;
   }
 
-   std::cout << "has_image contents:  [";
+  std::cout << "has_image contents:  [";
   for(int c=0; c<out_msg.has_image.size(); c++){
    std::cout << "," << out_msg.has_image[c];
   }
@@ -342,7 +346,7 @@ int main(int argc, char **argv){
   ros::NodeHandle nh;
 
   
-  nh.param("image_segmentation_node/safety_pixels", safety_pixels, 19);
+  nh.param("image_segmentation_node/safety_pixels", safety_pixels, 20);
   nh.param("image_segmentation_node/maxBufferSize", maxBufferSize, 119);
   nh.param("image_segmentation_node/MY_CLUSTER", MY_CLUSTER, 3);
   nh.param("image_segmentation_node/cutPixelsFromTop", cutPixelsFromTop, 150);
@@ -377,13 +381,13 @@ int main(int argc, char **argv){
 
   image_transport::ImageTransport it(nh);
 
-  pub = nh.advertise<image_msgs::Image_Segments>(out_topic_seg_images, 2);
+  pub = nh.advertise<roboskel_msgs::Image_Segments>(out_topic_seg_images, 2);
   
   tpub = it.advertise(out_topic_my_cluster_image, 1);
 
   pcl_pub = nh.advertise<sensor_msgs::PointCloud2> (out_topic_clusters, 1);
 
-  ros::Subscriber pcl_seg_sub = nh.subscribe<const pointcloud_msgs::PointCloud2_Segments&>(input_topic_clusters, 1, pcl_seg_Callback);
+  ros::Subscriber pcl_seg_sub = nh.subscribe<const roboskel_msgs::PointCloud2_Segments&>(input_topic_clusters, 1, pcl_seg_Callback);
 
   image_transport::Subscriber video_sub = it.subscribe(input_topic_camera, 50, videoCallback);    //  camera/rgb/image_raw gia to rosbag me tous 3, rear_cam/image_raw gia to rosbag me emena, usb_cam/image_raw gia to rosbag me to video mono
 

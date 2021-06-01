@@ -1,0 +1,39 @@
+version: '3.4'
+services:
+  # roscore:
+  #   image: image_seg
+  #   network_mode: host
+  #   command: bash -c "roscore"
+  # # rosbag:
+  #   image: image_seg
+  #   network_mode: host
+  #   command: bash -c ""
+  hpr:
+    image: image_track
+    network_mode: host
+    command: bash -c " roslaunch hpr hpr_test.launch use_sim_time:=True input_topic:=/scan method:=2"
+    # depends_on: 
+    #   - roscore
+  image_segmentation:
+    image: image_track
+    network_mode: host
+    command: bash -c  "sleep 5; roslaunch image_segmentation_node image_segmentation_node.launch safety_pixels:=20"
+    depends_on: 
+      # - roscore
+      - hpr
+  image_tracking:
+    image: image_track
+    network_mode: host
+    command: bash -c  "sleep 5; roslaunch image_segmentation_node image_track.launch"
+    depends_on: 
+      # - roscore
+      - hpr
+      - image_segmentation
+  # image_seg_saver:
+  #   image: image_track
+  #   network_mode: host
+  #   command: bash -c "rosrun image_segmentation_node seg_listener"
+  #   depends_on:
+  #     - roscore
+  #     - hpr
+  #     - image_segmentation

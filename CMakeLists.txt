@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   message_generation
   sensor_msgs
-  image_msgs
+  roboskel_msgs
   pointcloud_msgs
 )
 
@@ -206,7 +206,7 @@ add_definitions(${PCL_DEFINITIONS})
 #)
 #generate_messages(DEPENDENCIES sensor_msgs)
 
-catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs image_msgs)
+catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs roboskel_msgs)
 
 find_package(OpenCV)
 
